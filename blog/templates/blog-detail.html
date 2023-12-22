@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block main %}
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <h2 class="section-heading">{{ article.title }}</h2>
+                    <p>{{ article.description }}</p>
+                    <span class="caption text-muted">{{ article.created }}</span>
+                    <span class="caption text-muted">{{ article.content }}</span>
+                    <span class="caption text-muted">aaaaaa{{ article.author.user.username }}</span>
+                   {% if article.image %}
+                   
+                   <img class="img-responsive" src="{{ article.image.url }}" style="width: 400px; height: 300px" alt="">
+                   {% endif %}
+
+                
+                <div>View Count: {{article.view_count}}</div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <hr>
+{% endblock main %}

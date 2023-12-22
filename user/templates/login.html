@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% load static %}
+ {% block main %}
+    {% static 'img/home-bg.jpg' as home_bg %} 
+
+    {% include 'includes/banner.html' with banner_title='Login' banner_image=home_bg banner_description='Bura login sehifesidir' %}
+     <!-- Main Content -->
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-12 bg-light border border-dark p-3">
+      <div class="row text-center">
+        <div>
+          <h2>LOGIN</h2>
+        </div>
+          {% if invalid_credentials %}
+          <div class="h4 text-danger">Username or password incorrect</div>
+          {% endif %}
+          <form method="POST">
+            {% csrf_token %}
+            {{form.as_div}}
+              <input type="submit">
+             </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock main %}

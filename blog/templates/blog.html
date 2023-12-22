@@ -1,0 +1,144 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block main %}
+{% static 'img/post-bg.jpg' as blog_img %}
+{% include 'includes/banner.html' with banner_image=blog_img banner_title='Blog Me' banner_description='Bura Blog sehifesidir'%}
+    <!-- Main Content -->
+
+    <div class="container">
+        <div class="row">
+            {% comment %} -------------- {% endcomment %}
+            <div class="col-lg-2 col-lg-offset-2 col-md-2 ">
+<div class="h1">Authors</div>
+<ul class="list-unstyled">
+    {% for author in authors %}
+    <li><a href="?author={{author.user.username}}">{{author.user.get_full_name}}</a></li>
+    
+    {% endfor %}
+</ul>
+<hr>
+<div>
+    <h1>Tags</h1>
+{% for tag in tags %}
+<a href="?tag={{tag.title}}" class="badge bg-secondary">{{tag.title}}</a>
+{% endfor %}
+</div>
+<hr>
+
+            </div>
+            {% comment %} ............................ {% endcomment %}
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 ">
+            {% for article in articles  %}
+            <div class="post-preview">
+                <a href="{% url 'blog:blog-detail' id=article.id %}">
+                    <h2 class="post-title">
+                      {{article.title}}
+                    </h2>
+                    <h3 class="post-subtitle">
+                       {{article.description}}
+                    </h3>
+                </a>
+                <p class="post-meta">Posted by <a href="#">{{article.author.user.username}}</a> on {{article.created}}</p>
+            </div>
+            <div>
+                {% for tag in article.tags.all %}
+                
+                <a href="?tag={{tag.title}}" class="badge bg-secondary">{{tag.title}}</a>
+                {% endfor %}
+            </div>
+            <div>
+                {% if article.author == request.user.author %}
+                
+                    <a href="{% url 'blog:edit-article' id=article.id %}" style="background:green" class="badge bg-success">Edit</a>
+                    <a href="{% url 'blog:delete-article' pk=article.pk %}" style="background:red" class="badge bg-danger">Delete</a>
+                {% endif %}
+            </div>
+
+            <hr>
+
+            {% endfor %}
+            
+  
+                <!-- Pager -->
+                <ul class="pager">
+                    <li class="next">
+                        <a href="#">Older Posts &rarr;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <nav class="d-flex justify-content-center align-items-center">
+            <ul class="pagination">
+                {% if page.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{page.previous_page_number}}">Previous</a>
+                
+            </li>
+            {% else %}
+            <li class="page-item disable">
+                <span class="page-link">Previous</span>
+            </li>
+                {% endif %}
+              {% for page_number in paginator.page_range  %}
+              
+              <li class="page-item {% if page_number == page.number %}active{% endif %}"><a class="page-link" href="?page={{page_number}}">{{page_number}}</a></li>
+              {% endfor %}
+               {% comment %} <li class="page-item active" aria-current="page">
+                <span class="page-link">2</span>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li> {% endcomment %}
+              {% if page.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{page.next_page_number}}">next</a>
+                
+            </li>
+            {% else %}
+            <li class="page-item disable">
+                <span class="page-link">next</span>
+            </li>
+                {% endif %}
+            </ul>
+          </nav>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    {% endblock main %}
